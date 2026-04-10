@@ -47,9 +47,9 @@ DATASETS:
 # DATALOADER
 # -----------------------------------------------------------------------------
 DATALOADER:
-  AUGUMENTATION: ['Normalize', 'Crop', 'Flip']
-  CROP_SIZE: 128
-  CROP_NUMBER: 4
+  AUGUMENTATION: ['Normalize']
+  CROP_SIZE: 512
+  CROP_NUMBER: 1
   UPPER_BOUNDER: -1
   NUM_WORKERS: 0
 
