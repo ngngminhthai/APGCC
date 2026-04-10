@@ -103,7 +103,7 @@ class Trainer(object):
 
         if self.train_epoch % self.eval_period == 0 and self.train_epoch != 0:
             t1 = time.time()
-            result = evaluate_crowd_counting(self.model, self.val_dl, self.model.device)
+            result = evaluate_crowd_counting(self.model, self.val_dl, next(self.model.parameters()).device)
             t2 = time.time()
 
             self.log_eval.update(result[0], result[1], self.train_epoch)  # mae, mse, ep
