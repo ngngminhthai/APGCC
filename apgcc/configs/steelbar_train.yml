@@ -1,0 +1,84 @@
+TAG: 'steelbar_train'
+SEED: 1229
+GPU_ID: 0
+OUTPUT_DIR: './output/steelbar/'
+VIS: False
+
+# -----------------------------------------------------------------------------
+# MODEL
+# -----------------------------------------------------------------------------
+MODEL:
+  ENCODER: 'resnet50'                        # backbone
+  ENCODER_kwargs: {"last_pool": False}
+  DECODER: 'IFI'                            # IFI decoder (better for dense scenes)
+  DECODER_kwargs: {"num_classes": 2,
+                   "inner_planes": 64,
+                   "feat_layers":[3, 4]}
+
+  FROZEN_WEIGHTS: None
+
+  STRIDE: 8
+  ROW: 2
+  LINE: 2
+  POINT_LOSS_COEF: 0.0002
+  EOS_COEF: 0.5
+
+  LOSS: ['L2']
+  WEIGHT_DICT: {'loss_ce': 1, 'loss_points': 0.0002, 'loss_aux': 0.2}
+  AUX_EN: True
+  AUX_NUMBER: [2, 2]
+  AUX_RANGE: [2, 8]
+  AUX_kwargs: {'pos_coef': 1., 'neg_coef': 1., 'pos_loc': 0.0002, 'neg_loc': 0.0002}
+
+  # Optional: uncomment to fine-tune from SHHA pretrained weights
+  # FROZEN_WEIGHTS: './output/SHHA_best.pth'
+
+RESUME: False
+RESUME_PATH: ''
+
+# -----------------------------------------------------------------------------
+# Dataset
+# -----------------------------------------------------------------------------
+DATASETS:
+  DATASET: 'steelbar'
+  DATA_ROOT: 'C:/Users/User/Downloads/APGCC/steelbar_dataset'
+
+# -----------------------------------------------------------------------------
+# DATALOADER
+# -----------------------------------------------------------------------------
+DATALOADER:
+  AUGUMENTATION: ['Normalize', 'Crop', 'Flip']
+  CROP_SIZE: 128
+  CROP_NUMBER: 4
+  UPPER_BOUNDER: -1
+  NUM_WORKERS: 0
+
+# ---------------------------------------------------------------------------- #
+# Solver
+# ---------------------------------------------------------------------------- #
+SOLVER:
+  BATCH_SIZE: 8
+  START_EPOCH: 0
+  EPOCHS: 3500
+  LR_DROP: 3500
+  LR: 0.0001
+  LR_BACKBONE: 0.00001
+  WEIGHT_DECAY: 0.0001
+  CLIP_MAX_NORM: 0.1
+
+  EVAL_FREQ: 5
+  LOG_FREQ: 1
+
+# ---------------------------------------------------------------------------- #
+# Matcher
+# ---------------------------------------------------------------------------- #
+MATCHER:
+  SET_COST_CLASS: 1.
+  SET_COST_POINT: 0.05
+
+# -----------------------------------------------------------------------------
+# TEST
+# -----------------------------------------------------------------------------
+TEST:
+  THRESHOLD: 0.5
+  WEIGHT: ''
