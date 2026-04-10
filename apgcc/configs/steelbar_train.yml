@@ -24,8 +24,8 @@ MODEL:
   EOS_COEF: 0.5
 
   LOSS: ['L2']
-  WEIGHT_DICT: {'loss_ce': 1, 'loss_points': 0.0002, 'loss_aux': 0.2}
-  AUX_EN: True
+  WEIGHT_DICT: {'loss_ce': 1, 'loss_points': 0.0002, 'loss_aux': 0.}
+  AUX_EN: False
   AUX_NUMBER: [2, 2]
   AUX_RANGE: [2, 8]
   AUX_kwargs: {'pos_coef': 1., 'neg_coef': 1., 'pos_loc': 0.0002, 'neg_loc': 0.0002}

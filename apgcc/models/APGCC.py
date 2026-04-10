@@ -65,9 +65,10 @@ class Model_builder(nn.Module):
         # auto-compute anchor_stride from encoder strides if not explicitly set
         if self.cfg.MODEL.DECODER_kwargs.get('anchor_stride') is None:
             feat_layers = self.cfg.MODEL.DECODER_kwargs['feat_layers']
-            encoder_strides = self.encoder.get_strides() if hasattr(self.encoder, 'get_strides') else None
-            if encoder_strides is not None:
-                self.cfg.MODEL.DECODER_kwargs['anchor_stride'] = encoder_strides[feat_layers[0] - 1]
+            if hasattr(self.encoder, 'get_strides'):
+                self.cfg.MODEL.DECODER_kwargs['anchor_stride'] = self.encoder.get_strides()[feat_layers[0] - 1]
+            else:
+                self.cfg.MODEL.DECODER_kwargs['anchor_stride'] = None  # decoder default: 2**feat_layers[0]
         self.cfg.MODEL.DECODER_kwargs['num_anchor_points'] = self.num_anchor_points
         self.cfg.MODEL.DECODER_kwargs['sync_bn'] = False
         self.cfg.MODEL.DECODER_kwargs['AUX_EN'] = self.cfg.MODEL.AUX_EN
