@@ -13,8 +13,7 @@ MODEL:
   DECODER: 'IFI'                            # IFI decoder (better for dense scenes)
   DECODER_kwargs: {"num_classes": 2,
                    "inner_planes": 64,
-                   "feat_layers":[3, 4],
-                   "anchor_stride": 16}
+                   "feat_layers":[3, 4]}
 
   FROZEN_WEIGHTS: None
 

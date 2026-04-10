@@ -62,6 +62,12 @@ class Model_builder(nn.Module):
         self.cfg.MODEL.DECODER_kwargs['in_planes'] = self.encoder.get_outplanes()
         self.cfg.MODEL.DECODER_kwargs['line'] = self.cfg.MODEL.LINE
         self.cfg.MODEL.DECODER_kwargs['row'] = self.cfg.MODEL.ROW
+        # auto-compute anchor_stride from encoder strides if not explicitly set
+        if self.cfg.MODEL.DECODER_kwargs.get('anchor_stride') is None:
+            feat_layers = self.cfg.MODEL.DECODER_kwargs['feat_layers']
+            encoder_strides = self.encoder.get_strides() if hasattr(self.encoder, 'get_strides') else None
+            if encoder_strides is not None:
+                self.cfg.MODEL.DECODER_kwargs['anchor_stride'] = encoder_strides[feat_layers[0] - 1]
         self.cfg.MODEL.DECODER_kwargs['num_anchor_points'] = self.num_anchor_points
         self.cfg.MODEL.DECODER_kwargs['sync_bn'] = False
         self.cfg.MODEL.DECODER_kwargs['AUX_EN'] = self.cfg.MODEL.AUX_EN

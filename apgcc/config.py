@@ -33,15 +33,16 @@ _C.MODEL.DECODER = 'basic' # ['basic', 'IFA'] # decoder
 _C.MODEL.DECODER_kwargs = { "num_classes": 2,        # output num_classes, default:2 means confindence.
 							"inner_planes": 256,     # basic: 256, IFA: 64
 							"feat_layers":[3,4],     # control the number of decoder features. [1,2,3,4]
+							"anchor_stride": None,   # override anchor stride (None = auto: 2**feat_layers[0])
 							"pos_dim": 2,            #
 							"ultra_pe": False,       # additional position encoding. x -> (x, sin(x), cos(x))
 							"learn_pe": False,       # additional position encoding. x -> (trainable variable)
 							"unfold": False,         # unfold feat channel, make the feat dim be 3x3 times.
 							"local": False,          # enable local patch, 3x3 mapping near by the center point.
 							"no_aspp": True,         # final feat encoding add the aspp module.
-							"require_grad": True,	
+							"require_grad": True,
 							"out_type": 'Normal',	 # out_type = 'Normal' / 'Conv' / 'Deconv'
-							"head_layers":[1024,512,256,256]}  # head layers is n+1, last layers is num_of_proposals  
+							"head_layers":[1024,512,256,256]}  # head layers is n+1, last layers is num_of_proposals
 
 _C.MODEL.STRIDE = 8 					# the size of anchor map by image.shape/stride, ex: input 128x128, stride=8, anchor_map = 16x16
 _C.MODEL.ROW = 2 				# row, row number of anchor points

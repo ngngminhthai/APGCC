@@ -65,6 +65,10 @@ class Base_ConvNeXt(nn.Module):
     def get_outplanes(self):
         return list(self._outplanes)
 
+    def get_strides(self):
+        # body1=stride4, body2=stride8, body3=stride16, body4=stride32
+        return [4, 8, 16, 32]
+
     def forward(self, x):
         out = []
         for layer in [self.body1, self.body2, self.body3, self.body4]:
