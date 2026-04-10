@@ -95,18 +95,21 @@ class ImageDataset(Dataset):
                 img = torch.nn.functional.upsample_bilinear(img.unsqueeze(0), scale_factor=scale).squeeze(0)
                 point *= scale
             
-            # random crop augumentaiton 
+            # random crop augumentaiton
             if self.patch:
                 img, point = random_crop(img, point, num_patch=self.crop_number, crop_size=self.crop_size)
                 for i, _ in enumerate(point):  # transfer point to tensor
                     point[i] = torch.Tensor(point[i])
+            else:
+                img = img.unsqueeze(0)  # (C,H,W) -> (1,C,H,W) to match crop path shape
+                point = [point]
 
             # random flipping
-            if self.flip and random.random() > 0.5:    
+            if self.flip and random.random() > 0.5:
                 # random flip
                 img = torch.Tensor(img[:, :, :, ::-1].copy())
                 for i, _ in enumerate(point):
-                    point[i][:, 0] = self.crop_size - point[i][:, 0]  
+                    point[i][:, 0] = self.crop_size - point[i][:, 0]
         else:
             max_size = max(img.shape[1:])
             if max_size > self.upper_bound and self.upper_bound!=-1:
