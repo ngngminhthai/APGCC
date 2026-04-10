@@ -41,7 +41,7 @@ RESUME_PATH: ''
 # -----------------------------------------------------------------------------
 DATASETS:
   DATASET: 'steelbar'
-  DATA_ROOT: 'C:/Users/User/Downloads/APGCC/steelbar_dataset'
+  DATA_ROOT: '/workspace/APGCC/steelbar_dataset'
 
 # -----------------------------------------------------------------------------
 # DATALOADER
