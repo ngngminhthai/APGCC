@@ -48,6 +48,8 @@ class Model_builder(nn.Module):
             from .Encoder import Base_VGG as build_encoder
         elif self.cfg.MODEL.ENCODER in ['resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152']:
             from .Encoder import Base_ResNet as build_encoder
+        elif self.cfg.MODEL.ENCODER in ['convnext_tiny', 'convnext_small', 'convnext_base', 'convnext_large']:
+            from .backbones.convnext import Base_ConvNeXt as build_encoder
         self.cfg.MODEL.ENCODER_kwargs['name'] = self.cfg.MODEL.ENCODER
         encoder = build_encoder(**self.cfg.MODEL.ENCODER_kwargs)
         return encoder

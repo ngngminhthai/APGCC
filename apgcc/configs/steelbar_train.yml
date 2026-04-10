@@ -8,7 +8,7 @@ VIS: False
 # MODEL
 # -----------------------------------------------------------------------------
 MODEL:
-  ENCODER: 'resnet50'                        # backbone
+  ENCODER: 'convnext_small'                  # backbone: convnext_tiny / convnext_small / convnext_base / convnext_large
   ENCODER_kwargs: {"last_pool": False}
   DECODER: 'IFI'                            # IFI decoder (better for dense scenes)
   DECODER_kwargs: {"num_classes": 2,
@@ -59,8 +59,8 @@ DATALOADER:
 SOLVER:
   BATCH_SIZE: 8
   START_EPOCH: 0
-  EPOCHS: 3500
-  LR_DROP: 3500
+  EPOCHS: 200
+  LR_DROP: 60
   LR: 0.0001
   LR_BACKBONE: 0.00001
   WEIGHT_DECAY: 0.0001

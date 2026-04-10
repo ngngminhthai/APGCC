@@ -36,7 +36,7 @@ class Base_VGG(nn.Module):
                 self.body4 = nn.Sequential(*features[23:30])  # 16x down-sample
         self.num_channels = num_channels
         self.last_pool = last_pool
-        
+
     def get_outplanes(self):
         outplanes = []
         for i in range(4):
