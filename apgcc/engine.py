@@ -86,21 +86,21 @@ class Trainer(object):
         self.lr_scheduler.step()
 
         stat = {k: meter.global_avg for k, meter in self.metric_logger.meters.items()}
-        for k in log_train.keys():
+        for k in self.log_train.keys():
             self.log_train[k].update(stat[k])
 
         if self.train_epoch % self.log_period == 0:
             logger_text = "[ep %d][lr %.7f][%.2fs]:"%(self.train_epoch, self.optimizer.param_groups[0]['lr'], time.time() - self.curr_time)
-            for k in log_train.keys():
+            for k in self.log_train.keys():
                 logger_text += ' %s=%.8f/%.8f'%(k, stat[k], self.log_train[k].avg)
 
             self.logger.info('%s'%logger_text)
-            for k in log_train.keys():
+            for k in self.log_train.keys():
                 self.writer.add_scalar('loss/%s'%k, stat[k], self.train_epoch)
 
         if self.train_epoch % self.eval_period == 0 and self.train_epoch != 0:
             t1 = time.time()
-            result = evaluate_crowd_no_overlap(self.model, self.val_dl, self.model.device)
+            result = evaluate_crowd_counting(self.model, self.val_dl, next(self.model.parameters()).device, self.cfg.TEST.THRESHOLD)
             t2 = time.time()
 
             self.log_eval.update(result[0], result[1], self.train_epoch)  # mae, mse, ep
@@ -169,7 +169,7 @@ class Trainer(object):
                                             (self.log_eval.best_ep, self.log_eval.MAE_min, self.log_eval.MSE_min))
         torch.save(self.model_without_ddp.state_dict(), checkpoint_best_path)
         self.best_models.append(checkpoint_best_path)
-        if len(best_models) > 10:
+        if len(self.best_models) > 10:
             if os.path.isfile(self.best_models[0]):
                 os.remove(self.best_models[0])
             self.best_models.remove(self.best_models[0])

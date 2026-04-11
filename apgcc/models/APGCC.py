@@ -215,5 +215,4 @@ class SetCriterion_Crowd(nn.Module):
                 losses.update(self.loss_auxiliary(out_auxs, targets, show))
             else:
                 raise KeyError('do you really want to compute {} loss?'.format(loss))
-        print(losses)
         return losses
