@@ -66,8 +66,8 @@ class Base_ConvNeXt(nn.Module):
         return list(self._outplanes)
 
     def get_strides(self):
-        # body1=stride4, body2=stride8, body3=stride16, body4=stride32
-        return [4, 8, 16, 32]
+        # body1=stride4, body2=stride8, body3=stride16, body4=stride32/64
+        return [4, 8, 16, 64 if self.last_pool else 32]
 
     def forward(self, x):
         out = []

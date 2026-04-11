@@ -8,12 +8,12 @@ VIS: False
 # MODEL
 # -----------------------------------------------------------------------------
 MODEL:
-  ENCODER: 'convnext_small'                  # backbone: convnext_tiny / convnext_small / convnext_base / convnext_large
+  ENCODER: 'convnext_tiny'                  # backbone: convnext_tiny / convnext_small / convnext_base / convnext_large
   ENCODER_kwargs: {"last_pool": False}
   DECODER: 'IFI'                            # IFI decoder (better for dense scenes)
   DECODER_kwargs: {"num_classes": 2,
                    "inner_planes": 64,
-                   "feat_layers":[3, 4]}
+                   "feat_layers":[2, 3, 4]} # ConvNeXt stages are /4,/8,/16,/32; start at 2 to keep stride-8 anchors.
 
   FROZEN_WEIGHTS: None
 
