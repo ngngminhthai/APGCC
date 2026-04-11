@@ -79,8 +79,9 @@ class Model_builder(nn.Module):
         return decoder
 
     def forward(self, samples: NestedTensor):
-        features = self.encoder(samples.tensors)
-        out = self.decoder(samples.tensors, features)
+        tensors = samples.tensors if hasattr(samples, "tensors") else samples
+        features = self.encoder(tensors)
+        out = self.decoder(tensors, features)
         return out   # {'pred_logits', 'pred_points', 'offset'}
 
 class SetCriterion_Crowd(nn.Module):

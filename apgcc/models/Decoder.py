@@ -29,11 +29,7 @@ class AnchorPoints(nn.Module):
         all_anchor_points = np.zeros((0, 2)).astype(np.float32)
         all_anchor_points = np.append(all_anchor_points, shifted_anchor_points, axis=0)
         all_anchor_points = np.expand_dims(all_anchor_points, axis=0)
-        # send reference points to device
-        if torch.cuda.is_available():
-            return torch.from_numpy(all_anchor_points.astype(np.float32)).cuda()
-        else:
-            return torch.from_numpy(all_anchor_points.astype(np.float32))
+        return torch.from_numpy(all_anchor_points.astype(np.float32)).to(image.device)
 
     def _generate_anchor_points(self, stride=16, row=3, line=3):
         # generate the reference points in grid layout
