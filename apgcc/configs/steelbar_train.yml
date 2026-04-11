@@ -41,15 +41,15 @@ RESUME_PATH: ''
 # -----------------------------------------------------------------------------
 DATASETS:
   DATASET: 'steelbar'
-  DATA_ROOT: 'C:/Users/User/Downloads/APGCC/steelbar_dataset'
+  DATA_ROOT: '/workspace/APGCC/steelbar_dataset
 
 # -----------------------------------------------------------------------------
 # DATALOADER
 # -----------------------------------------------------------------------------
 DATALOADER:
-  AUGUMENTATION: ['Normalize', 'Crop', 'Flip']
-  CROP_SIZE: 128
-  CROP_NUMBER: 4
+  AUGUMENTATION: ['Normalize',]
+  CROP_SIZE: 512
+  CROP_NUMBER: 1
   UPPER_BOUNDER: -1
   NUM_WORKERS: 0
 
@@ -59,8 +59,8 @@ DATALOADER:
 SOLVER:
   BATCH_SIZE: 8
   START_EPOCH: 0
-  EPOCHS: 3500
-  LR_DROP: 3500
+  EPOCHS: 200
+  LR_DROP: 60
   LR: 0.0001
   LR_BACKBONE: 0.00001
   WEIGHT_DECAY: 0.0001
