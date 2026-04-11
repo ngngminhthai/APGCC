@@ -98,15 +98,22 @@ class ImageDataset(Dataset):
             # random crop augumentaiton 
             if self.patch:
                 img, point = random_crop(img, point, num_patch=self.crop_number, crop_size=self.crop_size)
-                for i, _ in enumerate(point):  # transfer point to tensor
-                    point[i] = torch.Tensor(point[i])
+            else:
+                point = [point]
+
+            for i, _ in enumerate(point):  # transfer point to tensor
+                point[i] = torch.Tensor(point[i])
 
             # random flipping
             if self.flip and random.random() > 0.5:    
                 # random flip
-                img = torch.Tensor(img[:, :, :, ::-1].copy())
+                if img.ndim == 4:
+                    img = torch.Tensor(img[:, :, :, ::-1].copy())
+                else:
+                    img = torch.flip(img, dims=[2])
                 for i, _ in enumerate(point):
-                    point[i][:, 0] = self.crop_size - point[i][:, 0]  
+                    width = img.shape[-1]
+                    point[i][:, 0] = width - point[i][:, 0]  
         else:
             max_size = max(img.shape[1:])
             if max_size > self.upper_bound and self.upper_bound!=-1:
@@ -147,10 +154,10 @@ def load_data(img_gt_path, train):
     points = []
     with open(gt_path) as f_label:
         for line in f_label:
-            x = float(line.strip().split(' ')[0])
-            y = float(line.strip().split(' ')[1])
+            x = float(line.strip().split()[0])
+            y = float(line.strip().split()[1])
             points.append([x, y])
-    return img, np.array(points)
+    return img, np.array(points, dtype=np.float32).reshape(-1, 2)
 
 # random crop augumentation
 def random_crop(img, den, num_patch=4, crop_size=128):
